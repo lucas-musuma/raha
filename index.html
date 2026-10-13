@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafariGo - Stay & Ride</title>
+
+    <style>
+        /* ===== RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #f6f7f9;
+            color: #17202a;
+        }
+
+        /* ===== NAVBAR ===== */
+        nav {
+            height: 72px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, .08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #087f5b;
+        }
+
+        .logo span {
+            color: #111;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .phone {
+            background: #087f5b;
+            color: white !important;
+            padding: 11px 17px;
+            border-radius: 25px;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 570px;
+            display: flex;
+            align-items: center;
+            padding: 70px 7%;
+            background: linear-gradient(90deg, rgba(3, 40, 30, .94), rgba(3, 40, 30, .68), rgba(3, 40, 30, .20)), linear-gradient(135deg, #087f5b, #f59f00);
+        }
+
+        .hero-content {
+            max-width: 680px;
+            color: white;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(42px, 6vw, 72px);
+            line-height: 1.05;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 span {
+            color: #ffd43b;
+        }
+
+        .hero p {
+            font-size: 19px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: none;
+            padding: 15px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            transition: .2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .primary {
+            background: #ffd43b;
+            color: #111;
+        }
+
+        .secondary {
+            background: white;
+            color: #087f5b;
+        }
+
+        /* ===== BOOKING BOX ===== */
+        .booking-wrapper {
+            width: 86%;
+            max-width: 1100px;
+            margin: -55px auto 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .booking-box {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, .15);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .tab {
+            border: none;
+            padding: 12px 22px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 700;
+            background: #edf2f0;
+            color: #333;
+            transition: .2s;
+        }
+
+        .tab.active {
+            background: #087f5b;
+            color: white;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            align-items: end;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 7px;
+            color: #555;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            outline: none;
+            background: #fff;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: #087f5b;
+        }
+
+        .price-breakdown {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8faf9;
+            border-radius: 10px;
+            border: 1px dashed #087f5b;
+            font-size: 14px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .price-row.total {
+            font-size: 18px;
+            font-weight: bold;
+            color: #087f5b;
+            border-top: 1px solid #ddd;
+            padding-top: 6px;
+            margin-top: 6px;
+        }
+
+        .mpesa-alert {
+            background: #e6fcf5;
+            border: 1px solid #c3fae8;
+            color: #0b7285;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .action-btns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .search-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            color: white;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: .2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+
+        .btn-wa {
+            background: #25D366;
+        }
+
+        .btn-wa:hover {
+            background: #1ebd59;
+        }
+
+        .btn-sms {
+            background: #0284c7;
+        }
+
+        .btn-sms:hover {
+            background: #0369a1;
+        }
+
+        /* ===== SECTIONS ===== */
+        section {
+            padding: 60px 7%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #777;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .08);
+            transition: .25s;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, .12);
+        }
+
+        .card-image {
+            height: 220px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 85px;
+            color: white;
+        }
+
+        .house1 {
+            background: linear-gradient(135deg, #087f5b, #74c69d);
+        }
+
+        .house2 {
+            background: linear-gradient(135deg, #e8590c, #ffd43b);
+        }
+
+        .house3 {
+            background: linear-gradient(135deg, #1864ab, #74c0fc);
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content h3 {
+            margin-bottom: 8px;
+        }
+
+        .location {
+            color: #777;
+            margin-bottom: 12px;
+        }
+
+        .price {
+            font-size: 16px;
+            font-weight: 600;
+            color: #444;
+            line-height: 1.5;
+        }
+
+        .price strong {
+            color: #087f5b;
+            font-size: 20px;
+        }
+
+        .book-small {
+            float: right;
+            background: #087f5b;
+            color: white;
+            border: none;
+            padding: 9px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .rides {
+            background: #101817;
+            color: white;
+        }
+
+        .ride-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .ride-card {
+            background: #1c2725;
+            border: 1px solid #30403c;
+            border-radius: 18px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .car-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .ride-price {
+            margin-top: 15px;
+            color: #ffd43b;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .feature {
+            text-align: center;
+            background: white;
+            padding: 28px 18px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .06);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        footer {
+            background: #0b1a17;
+            color: #aaa;
+            padding: 40px 7%;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav>
+        <div class="logo">Safari<span>Go</span></div>
+        <div class="nav-links">
+            <a href="#stays">Stays</a>
+            <a href="#rides">Rides</a>
+            <a href="#booking" class="phone">📞 Book Now</a>
+        </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Stay Easy, <span>Ride Easy</span> Across Kenya</h1>
+            <p>Affordable holiday homes in Diani, Nairobi, Naivasha + reliable rides to get you there. One booking,
+                everything sorted.</p>
+            <div class="hero-buttons">
+                <a href="#booking" class="btn primary" onclick="switchTab('stay')">Book a Stay</a>
+                <a href="#booking" class="btn secondary" onclick="switchTab('ride')">Book a Ride</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== BOOKING ENGINE ===== -->
+    <div class="booking-wrapper" id="booking">
+        <div class="booking-box">
+
+            <div class="tabs">
+                <button id="tabStay" class="tab active">🏡 Stay</button>
+                <button id="tabRide" class="tab">🚗 Ride</button>
+            </div>
+
+            <!-- STAY FORM -->
+            <div id="stayForm">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Destination</label>
+                        <select id="stayLocation">
+                            <option value="3500">Diani Beach - 3,500 KES/night</option>
+                            <option value="3000">Nairobi Westlands - 3,000 KES/night</option>
+                            <option value="4000">Naivasha Lake - 4,000 KES/night</option>
+                        </select>
+                    </div>
+                    <div class="input-group"><label>Check-in</label><input type="date" id="checkin"></div>
+                    <div class="input-group"><label>Check-out</label><input type="date" id="checkout"></div>
+                    <div class="input-group"><label>Guests</label><select id="guests">
+                            <option>1 Guest</option>
+                            <option>2 Guests</option>
+                            <option>3 Guests</option>
+                            <option>4+ Guests</option>
+                        </select></div>
+                </div>
+                <div class="price-breakdown">
+                    <div class="price-row"><span>Nightly Rate</span><span id="nightly">3,500 KES</span></div>
+                    <div class="price-row"><span>Nights</span><span id="nights">1</span></div>
+                    <div class="price-row"><span>Service Fee</span><span>500 KES</span></div>
+                    <div class="price-row total"><span>Total</span><span id="stayTotal">4,000 KES</span></div>
+                </div>
+            </div>
+
+            <!-- RIDE FORM -->
+            <div id="rideForm" class="hidden">
+                <div class="form-grid">
+                    <div class="input-group"><label>Pickup</label><input type="text" id="pickup"
+                            placeholder="e.g. JKIA, Nairobi"></div>
+                    <div class="input-group"><label>Drop-off</label><input type="text" id="dropoff"
+                            placeholder="e.g. Diani Beach"></div>
+                    <div class="input-group"><label>Date</label><input type="date" id="rideDate"></div>
+                    <div class="input-group"><label>Car Type</label><select id="carType">
+                            <option value="3500">Economy - 3,500 KES/day</option>
+                            <option value="6000">SUV - 6,000 KES/day</option>
+                            <option value="9000">Van 14-seater - 9,000 KES/day</option>
+                        </select></div>
+                </div>
+                <div class="price-breakdown">
+                    <div class="price-row"><span>Daily Rate</span><span id="dailyRate">3,500 KES</span></div>
+                    <div class="price-row"><span>Driver + Fuel</span><span>Included</span></div>
+                    <div class="price-row total"><span>Total</span><span id="rideTotal">3,500 KES</span></div>
+                </div>
+            </div>
+
+            <div class="mpesa-alert">💚 Lipa na M-Pesa Till: 123456 - SafariGo. Pay after confirmation.</div>
+            <div class="action-btns">
+                <button class="search-btn btn-wa">💬 WhatsApp Booking</button>
+                <button class="search-btn btn-sms">✉️ SMS Booking</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== STAYS ===== -->
+    <section id="stays">
+        <div class="section-title">
+            <h2>Popular Stays</h2>
+            <p>Clean, verified homes with WiFi, kitchen & security</p>
+        </div>
+        <div class="cards">
+            <div class="card">
+                <div class="card-image house1">🏖️</div>
+                <div class="card-content"><button class="book-small" data-stay="Diani Beach">Book</button>
+                    <h3>Diani Beach Villa</h3>
+                    <div class="location">Diani, Kwale</div>
+                    <div class="price"><strong>3,500 KES</strong> / night • 2BR</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-image house2">🏙️</div>
+                <div class="card-content"><button class="book-small" data-stay="Nairobi Westlands">Book</button>
+                    <h3>Westlands Apartment</h3>
+                    <div class="location">Nairobi</div>
+                    <div class="price"><strong>3,000 KES</strong> / night • 1BR</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-image house3">🏞️</div>
+                <div class="card-content"><button class="book-small" data-stay="Naivasha Lake">Book</button>
+                    <h3>Lake Naivasha Cottage</h3>
+                    <div class="location">Naivasha</div>
+                    <div class="price"><strong>4,000 KES</strong> / night • 3BR</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== RIDES ===== -->
+    <section class="rides" id="rides">
+        <div class="section-title">
+            <h2>Ride Options</h2>
+            <p>Safe drivers, affordable rates anywhere in Kenya</p>
+        </div>
+        <div class="ride-cards">
+            <div class="ride-card">
+                <div class="car-icon">🚗</div>
+                <h3>Economy</h3>
+                <p>Toyota Vitz, small groups, city rides</p>
+                <div class="ride-price">3,500 / day</div>
+            </div>
+            <div class="ride-card">
+                <div class="car-icon">🚙</div>
+                <h3>SUV</h3>
+                <p>Prado / RAV4 for upcountry trips</p>
+                <div class="ride-price">6,000 / day</div>
+            </div>
+            <div class="ride-card">
+                <div class="car-icon">🚐</div>
+                <h3>Van</h3>
+                <p>14-seater for chama, family trips</p>
+                <div class="ride-price">9,000 / day</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== WHY US ===== -->
+    <section>
+        <div class="section-title">
+            <h2>Why SafariGo?</h2>
+        </div>
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">✅</div>
+                <h3>Verified</h3>
+                <p>All homes visited & checked</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💬</div>
+                <h3>Instant WhatsApp</h3>
+                <p>Book in 2 minutes, no app needed</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💰</div>
+                <h3>M-Pesa Friendly</h3>
+                <p>Lipa polepole, no hidden fees</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🛡️</div>
+                <h3>24/7 Support</h3>
+                <p>We stay with you till check-out</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>© 2026 SafariGo • Stay & Ride • Made in Kenya 🇰🇪</footer>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // ---- Config ----
+        const BUSINESS_NUMBER = "254700000000";
+        const $ = id => document.getElementById(id);
+        let currentTab = 'stay';
+
+        // ---- Tab Logic (Fixed, no event bug) ----
+        function switchTab(tab) {
+            currentTab = tab;
+            $('tabStay').classList.toggle('active', tab === 'stay');
+            $('tabRide').classList.toggle('active', tab === 'ride');
+            $('stayForm').classList.toggle('hidden', tab !== 'stay');
+            $('rideForm').classList.toggle('hidden', tab !== 'ride');
+        }
+        $('tabStay').addEventListener('click', () => switchTab('stay'));
+        $('tabRide').addEventListener('click', () => switchTab('ride'));
+
+        // ---- Price Logic ----
+        function calculateStay() {
+            let rate = parseInt($('stayLocation').value) || 3500;
+            let ci = new Date($('checkin').value);
+            let co = new Date($('checkout').value);
+            let nights = 1;
+            if ($('checkin').value && $('checkout').value && co > ci) {
+                nights = Math.round((co - ci) / (1000 * 60 * 60 * 24));
+            }
+            $('nightly').innerText = rate.toLocaleString() + ' KES';
+            $('nights').innerText = nights;
+            $('stayTotal').innerText = (rate * nights + 500).toLocaleString() + ' KES';
+        }
+        function calculateRide() {
+            let rate = parseInt($('carType').value) || 3500;
+            $('dailyRate').innerText = rate.toLocaleString() + ' KES';
+            $('rideTotal').innerText = rate.toLocaleString() + ' KES';
+        }
+        $('stayLocation').addEventListener('change', calculateStay);
+        $('checkin').addEventListener('change', calculateStay);
+        $('checkout').addEventListener('change', calculateStay);
+        $('carType').addEventListener('change', calculateRide);
+
+        // ---- Select from Cards ----
+        document.querySelectorAll('[data-stay]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchTab('stay');
+                let sel = $('stayLocation');
+                for (let o of sel.options) { if (o.text.includes(btn.dataset.stay)) { sel.value = o.value; break; } }
+                calculateStay();
+                $('booking').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // ---- Booking Message ----
+        function buildMessage() {
+            if (currentTab === 'stay') {
+                let loc = $('stayLocation').options[$('stayLocation').selectedIndex].text;
+                let ci = $('checkin').value || 'Not set';
+                let co = $('checkout').value || 'Not set';
+                let guests = $('guests').value;
+                let total = $('stayTotal').innerText;
+                return `Hello SafariGo! I want to BOOK A STAY:%0A📍 ${loc}%0A📅 Check-in: ${ci}%0A📅 Check-out: ${co}%0A👥 ${guests}%0A💰 Total: ${total}`;
+            } else {
+                let pick = $('pickup').value || 'Not set';
+                let drop = $('dropoff').value || 'Not set';
+                let date = $('rideDate').value || 'Not set';
+                let car = $('carType').options[$('carType').selectedIndex].text;
+                let total = $('rideTotal').innerText;
+                return `Hello SafariGo! I want to BOOK A RIDE:%0A📍 From: ${pick}%0A📍 To: ${drop}%0A📅 Date: ${date}%0A🚗 ${car}%0A💰 Total: ${total}`;
+            }
+        }
+        document.querySelector('.btn-wa').addEventListener('click', () => {
+            window.open(`https://wa.me/${BUSINESS_NUMBER}?text=${buildMessage()}`, '_blank');
+        });
+        document.querySelector('.btn-sms').addEventListener('click', () => {
+            let msg = decodeURIComponent(buildMessage().replace(/%0A/g, '\n'));
+            window.open(`sms:+${BUSINESS_NUMBER}?body=${encodeURIComponent(msg)}`, '_blank');
+        });
+
+        // Init
+        calculateStay(); calculateRide();
+    </script>
+</body>
+
+</html>
